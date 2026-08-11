@@ -32,12 +32,12 @@ jobs:
         if: always()
         run: |
           if [ "${{ job.status }}" = "success" ]; then
-            MESSAGE="✅ CI Pipeline SUCCESS for DevOps WebApp"
+            MESSAGE="CI Pipeline SUCCESS for DevOps WebApp"
           else
-            MESSAGE="❌ CI Pipeline FAILED for DevOps WebApp"
+            MESSAGE="CI Pipeline FAILED for DevOps WebApp"
           fi
 
           curl -X POST \
-            -H 'Content-type: application/json' \
+            -H "Content-type: application/json" \
             --data "{\"text\":\"$MESSAGE\"}" \
             "${{ secrets.SLACK_WEBHOOK }}"
