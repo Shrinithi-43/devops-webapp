@@ -19,7 +19,6 @@ jobs:
       - name: Build
         run: |
           echo "Building DevOps WebApp..."
-          echo "Checking index.html..."
           test -f index.html
           echo "Build successful!"
 
@@ -28,3 +27,17 @@ jobs:
           echo "Running tests..."
           test -f index.html
           echo "Tests passed!"
+
+      - name: Send Slack notification
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            MESSAGE="✅ CI Pipeline SUCCESS for DevOps WebApp"
+          else
+            MESSAGE="❌ CI Pipeline FAILED for DevOps WebApp"
+          fi
+
+          curl -X POST \
+            -H 'Content-type: application/json' \
+            --data "{\"text\":\"$MESSAGE\"}" \
+            "${{ secrets.SLACK_WEBHOOK }}"
